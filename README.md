@@ -48,3 +48,7 @@ export default tseslint.config({
   },
 })
 ```
+
+TODO:
+- Update colors theme to match logo
+- Fix height of card to match tallest one
