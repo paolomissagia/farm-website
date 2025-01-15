@@ -14,13 +14,11 @@ import { ContactFormData, ContactModalProps } from "@/helpers/interfaces";
 import { useForm } from "@/helpers/hooks";
 import emailjs from "@emailjs/browser";
 import { useToast } from "@/hooks/use-toast";
-
-const EMAIL_SERVICE_ID = import.meta.env.VITE_EMAIL_SERVICE_ID;
-
-const EMAIL_CONTACT_TEMPLATE_ID = import.meta.env
-  .VITE_EMAIL_CONTACT_TEMPLATE_ID;
-
-const EMAIL_PUBLIC_KEY = import.meta.env.VITE_EMAIL_PUBLIC_KEY;
+import {
+  EMAIL_CONTACT_TEMPLATE_ID,
+  EMAIL_PUBLIC_KEY,
+  EMAIL_SERVICE_ID,
+} from "@/helpers/constants";
 
 export default function ContactModal({ onClose }: ContactModalProps) {
   const { toast } = useToast();
@@ -31,17 +29,22 @@ export default function ContactModal({ onClose }: ContactModalProps) {
     message: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     try {
       const contactData = {
         ...formData,
       };
 
-      emailjs.send(EMAIL_SERVICE_ID, EMAIL_CONTACT_TEMPLATE_ID, contactData, {
-        publicKey: EMAIL_PUBLIC_KEY,
-      });
+      await emailjs.send(
+        EMAIL_SERVICE_ID,
+        EMAIL_CONTACT_TEMPLATE_ID,
+        contactData,
+        {
+          publicKey: EMAIL_PUBLIC_KEY,
+        },
+      );
 
       toast({
         title: "Kontaktanfrage gesendet",

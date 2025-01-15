@@ -17,13 +17,11 @@ import { useToast } from "@/hooks/use-toast";
 import emailjs from "@emailjs/browser";
 import { useForm } from "@/helpers/hooks";
 import { BookingFormData, BookingModalProps } from "@/helpers/interfaces";
-
-const EMAIL_SERVICE_ID = import.meta.env.VITE_EMAIL_SERVICE_ID;
-
-const EMAIL_BOOKING_TEMPLATE_ID = import.meta.env
-  .VITE_EMAIL_BOOKING_TEMPLATE_ID;
-
-const EMAIL_PUBLIC_KEY = import.meta.env.VITE_EMAIL_PUBLIC_KEY;
+import {
+  EMAIL_BOOKING_TEMPLATE_ID,
+  EMAIL_PUBLIC_KEY,
+  EMAIL_SERVICE_ID,
+} from "@/helpers/constants";
 
 export default function BookingModal({ machine, onClose }: BookingModalProps) {
   const { toast } = useToast();
@@ -172,7 +170,6 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
                   value={formData.startTime}
                   onChange={handleChange}
                   required
-                  step="3600"
                 />
               </div>
               <div>
@@ -184,7 +181,6 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
                   value={formData.endTime}
                   onChange={handleChange}
                   required
-                  step="3600"
                 />
               </div>
             </div>
