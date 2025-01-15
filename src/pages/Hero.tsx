@@ -15,7 +15,7 @@ export default function Hero() {
         </div>
         <div className="flex w-full flex-col items-center justify-center text-center md:w-1/2">
           <h1 className="mb-4 text-4xl font-bold">
-            Agar & Dienstleistungen Oberlausitz
+            Agar & Oberlausitz Dienstleistungen
           </h1>
           <p className="mb-8 max-w-lg text-xl">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -25,12 +25,14 @@ export default function Hero() {
             <Button
               onClick={() => scrollToSection("choose-machine")}
               variant="default"
+              size="lg"
             >
               Optionen anzeigen
             </Button>
             <Button
               onClick={() => setIsContactModalOpen(true)}
               variant="outline"
+              size="lg"
             >
               Kontaktieren Sie uns
             </Button>
