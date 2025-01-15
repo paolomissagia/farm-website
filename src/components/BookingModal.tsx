@@ -12,11 +12,11 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useForm } from "@/helpers/hooks";
-import { BookingFormData, BookingModalProps } from "@/helpers/interfaces";
-import emailjs from "@emailjs/browser";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from "@emailjs/browser";
+import { useForm } from "@/helpers/hooks";
+import { BookingFormData, BookingModalProps } from "@/helpers/interfaces";
 
 const EMAIL_SERVICE_ID = import.meta.env.VITE_EMAIL_SERVICE_ID;
 
@@ -70,9 +70,14 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
         endDate: formatDate(formData.endDate),
       };
 
-      emailjs.send(EMAIL_SERVICE_ID, EMAIL_BOOKING_TEMPLATE_ID, bookingData, {
-        publicKey: EMAIL_PUBLIC_KEY,
-      });
+      await emailjs.send(
+        EMAIL_SERVICE_ID,
+        EMAIL_BOOKING_TEMPLATE_ID,
+        bookingData,
+        {
+          publicKey: EMAIL_PUBLIC_KEY,
+        },
+      );
 
       toast({
         title: "Buchung erfolgreich",
@@ -97,7 +102,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{machine.name} buchen</DialogTitle>
         </DialogHeader>
@@ -129,11 +134,12 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
               <RadioGroup
                 name="rentalType"
                 value={formData.rentalType}
-                onValueChange={(value) =>
+                onValueChange={(value: "hourly" | "daily") =>
                   handleChange({
                     target: { name: "rentalType", value },
                   } as React.ChangeEvent<HTMLInputElement>)
                 }
+                className="flex flex-col space-y-1"
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="daily" id="daily" />
@@ -147,14 +153,16 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
             </div>
           )}
           <div>
-            <Label htmlFor="startDate">Startdatum</Label>
+            <Label htmlFor="startDate">
+              {formData.rentalType == "hourly" ? "Datum" : "Startdatum"}
+            </Label>
             <DatePicker
-              value={formData.startDate || undefined}
+              value={formData.startDate}
               onChange={handleDateChange("startDate")}
             />
           </div>
-          {formData.rentalType === "hourly" ? (
-            <>
+          {formData.rentalType === "hourly" && (
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="startTime">Startzeit</Label>
                 <Input
@@ -164,6 +172,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
                   value={formData.startTime}
                   onChange={handleChange}
                   required
+                  step="3600"
                 />
               </div>
               <div>
@@ -175,14 +184,16 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
                   value={formData.endTime}
                   onChange={handleChange}
                   required
+                  step="3600"
                 />
               </div>
-            </>
-          ) : (
+            </div>
+          )}
+          {formData.rentalType === "daily" && (
             <div>
               <Label htmlFor="endDate">Enddatum</Label>
               <DatePicker
-                value={formData.endDate || undefined}
+                value={formData.endDate}
                 onChange={handleEndDateChange}
                 disabled={(date) =>
                   formData.startDate ? date < formData.startDate : false
@@ -197,11 +208,10 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
               name="deliveryAddress"
               value={formData.deliveryAddress}
               onChange={handleChange}
-              rows={2}
-              required
+              rows={4}
             />
           </div>
-          <DialogFooter>
+          <DialogFooter className="sm:justify-end">
             <Button type="button" variant="outline" onClick={onClose}>
               Abbrechen
             </Button>

@@ -67,7 +67,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Kontaktieren Sie uns</DialogTitle>
         </DialogHeader>
@@ -104,7 +104,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               rows={4}
             />
           </div>
-          <DialogFooter>
+          <DialogFooter className="sm:justify-end">
             <Button type="button" variant="outline" onClick={onClose}>
               Stornieren
             </Button>
