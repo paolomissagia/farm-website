@@ -13,6 +13,7 @@ import {
 import { ContactFormData, ContactModalProps } from "@/helpers/interfaces";
 import { useForm } from "@/helpers/hooks";
 import emailjs from "@emailjs/browser";
+import { useToast } from "@/hooks/use-toast";
 
 const EMAIL_SERVICE_ID = import.meta.env.VITE_EMAIL_SERVICE_ID;
 
@@ -22,6 +23,8 @@ const EMAIL_CONTACT_TEMPLATE_ID = import.meta.env
 const EMAIL_PUBLIC_KEY = import.meta.env.VITE_EMAIL_PUBLIC_KEY;
 
 export default function ContactModal({ onClose }: ContactModalProps) {
+  const { toast } = useToast();
+
   const { formData, handleChange, resetForm } = useForm<ContactFormData>({
     name: "",
     phone: "",
@@ -40,10 +43,25 @@ export default function ContactModal({ onClose }: ContactModalProps) {
         publicKey: EMAIL_PUBLIC_KEY,
       });
 
+      toast({
+        title: "Kontaktanfrage gesendet",
+        description:
+          "Vielen Dank für Ihre Nachricht. Wir werden uns bald bei Ihnen melden.",
+        duration: 5000,
+      });
+
       resetForm();
       onClose();
     } catch (error) {
       console.error("Error", error);
+
+      toast({
+        title: "Fehler",
+        description:
+          "Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut.",
+        variant: "destructive",
+        duration: 5000,
+      });
     }
   };
 
@@ -51,7 +69,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Contact Us</DialogTitle>
+          <DialogTitle>Kontaktieren Sie uns</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -65,7 +83,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
             />
           </div>
           <div>
-            <Label htmlFor="phone">Phone</Label>
+            <Label htmlFor="phone">Telefon</Label>
             <Input
               id="phone"
               name="phone"
@@ -76,7 +94,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
             />
           </div>
           <div>
-            <Label htmlFor="message">Message</Label>
+            <Label htmlFor="message">Nachricht</Label>
             <Textarea
               id="message"
               name="message"
@@ -88,7 +106,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
+              Stornieren
             </Button>
             <Button type="submit">Send</Button>
           </DialogFooter>

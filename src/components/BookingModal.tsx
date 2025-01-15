@@ -16,6 +16,7 @@ import { useForm } from "@/helpers/hooks";
 import { BookingFormData, BookingModalProps } from "@/helpers/interfaces";
 import emailjs from "@emailjs/browser";
 import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
 
 const EMAIL_SERVICE_ID = import.meta.env.VITE_EMAIL_SERVICE_ID;
 
@@ -25,6 +26,8 @@ const EMAIL_BOOKING_TEMPLATE_ID = import.meta.env
 const EMAIL_PUBLIC_KEY = import.meta.env.VITE_EMAIL_PUBLIC_KEY;
 
 export default function BookingModal({ machine, onClose }: BookingModalProps) {
+  const { toast } = useToast();
+
   const { formData, handleChange, resetForm } = useForm<BookingFormData>({
     name: "",
     phone: "",
@@ -33,7 +36,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
     startTime: "",
     endTime: "",
     deliveryAddress: "",
-    rentalType: undefined,
+    rentalType: machine.id == 1 ? "daily" : undefined,
   });
 
   const handleDateChange =
@@ -71,10 +74,24 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
         publicKey: EMAIL_PUBLIC_KEY,
       });
 
+      toast({
+        title: "Buchung erfolgreich",
+        description: `Ihre Buchung für ${machine.name} wurde erfolgreich aufgenommen. Wir werden uns bald bei Ihnen melden.`,
+        duration: 5000,
+      });
+
       resetForm();
       onClose();
     } catch (error) {
       console.error("Error", error);
+
+      toast({
+        title: "Fehler",
+        description:
+          "Es gab ein Problem bei Ihrer Buchung. Bitte versuchen Sie es später erneut.",
+        variant: "destructive",
+        duration: 5000,
+      });
     }
   };
 
