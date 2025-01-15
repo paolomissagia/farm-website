@@ -48,9 +48,3 @@ export default tseslint.config({
   },
 })
 ```
-
-TODO:
-- Update colors theme to match logo
-- Fix height of card to match tallest one
-- Added toast on form submit
-- Make email template conditional to hide some fields
