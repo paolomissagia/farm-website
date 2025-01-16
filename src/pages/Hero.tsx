@@ -8,7 +8,7 @@ export default function Hero() {
   const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
 
   return (
-    <section className="flex items-center justify-center px-4 py-16 sm:py-20">
+    <section className="flex items-center justify-center px-4 py-12 sm:py-20">
       <div className="flex w-full max-w-6xl flex-col items-center md:flex-row-reverse">
         <div className="mb-8 w-full md:w-1/2">
           <img src={Logo} alt="Logo image" className="w-full" />

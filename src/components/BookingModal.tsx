@@ -124,7 +124,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[425px]">
+      <DialogContent className="max-h-[90vh] max-w-[90vw] overflow-y-auto sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{machine.name} buchen</DialogTitle>
         </DialogHeader>
@@ -230,10 +230,9 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
               name="deliveryAddress"
               value={formData.deliveryAddress}
               onChange={handleChange}
-              rows={4}
             />
           </div>
-          <DialogFooter className="flex flex-col space-y-2 sm:justify-end sm:space-x-4 sm:space-y-0">
+          <DialogFooter className="flex flex-row justify-center gap-x-3">
             <Button type="button" variant="outline" onClick={onClose}>
               Abbrechen
             </Button>
