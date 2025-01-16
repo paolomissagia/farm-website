@@ -24,6 +24,7 @@ import { validatePhone } from "@/helpers/functions";
 export default function ContactModal({ onClose }: ContactModalProps) {
   const { toast } = useToast();
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { formData, handleChange, resetForm } = useForm<ContactFormData>({
     name: "",
@@ -34,7 +35,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (isSubmitting) {
+      return;
+    }
+
     try {
+      setIsSubmitting(true);
+
       const contactData = {
         ...formData,
       };
@@ -74,6 +81,8 @@ export default function ContactModal({ onClose }: ContactModalProps) {
         variant: "destructive",
         duration: 5000,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -121,7 +130,9 @@ export default function ContactModal({ onClose }: ContactModalProps) {
             <Button type="button" variant="outline" onClick={onClose}>
               Stornieren
             </Button>
-            <Button type="submit">Send</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              Send
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

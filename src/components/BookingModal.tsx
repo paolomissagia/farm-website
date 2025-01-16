@@ -27,6 +27,8 @@ import { validatePhone } from "@/helpers/functions";
 export default function BookingModal({ machine, onClose }: BookingModalProps) {
   const { toast } = useToast();
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [dateError, setDateError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { formData, handleChange, resetForm } = useForm<BookingFormData>({
     name: "",
@@ -61,6 +63,15 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (isSubmitting) {
+      return;
+    }
+
+    if (!formData.startDate) {
+      setDateError("Startdatum ist erforderlich");
+      return;
+    }
+
     if (!validatePhone(formData.phone)) {
       setPhoneError("Bitte geben Sie eine gültige Telefonnummer ein.");
       return;
@@ -69,6 +80,8 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
     }
 
     try {
+      setIsSubmitting(true);
+
       const bookingData = {
         ...formData,
         machineName: machine.name,
@@ -104,6 +117,8 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
         variant: "destructive",
         duration: 5000,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -168,6 +183,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
               value={formData.startDate}
               onChange={handleDateChange("startDate")}
             />
+            {dateError && <p className="text-sm text-red-500">{dateError}</p>}
           </div>
           {formData.rentalType === "hourly" && (
             <div className="grid grid-cols-2 gap-4">
@@ -221,7 +237,9 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
             <Button type="button" variant="outline" onClick={onClose}>
               Abbrechen
             </Button>
-            <Button type="submit">Jetzt buchen</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              Jetzt buchen
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
