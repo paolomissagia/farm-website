@@ -126,7 +126,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               rows={4}
             />
           </div>
-          <DialogFooter className="sm:justify-end">
+          <DialogFooter className="flex flex-col space-y-2 sm:justify-end sm:space-x-4 sm:space-y-0">
             <Button type="button" variant="outline" onClick={onClose}>
               Abbrechen
             </Button>
