@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,9 +22,11 @@ import {
   EMAIL_PUBLIC_KEY,
   EMAIL_SERVICE_ID,
 } from "@/helpers/constants";
+import { validatePhone } from "@/helpers/functions";
 
 export default function BookingModal({ machine, onClose }: BookingModalProps) {
   const { toast } = useToast();
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const { formData, handleChange, resetForm } = useForm<BookingFormData>({
     name: "",
@@ -58,6 +60,13 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!validatePhone(formData.phone)) {
+      setPhoneError("Bitte geben Sie eine gültige Telefonnummer ein.");
+      return;
+    } else {
+      setPhoneError(null);
+    }
 
     try {
       const bookingData = {
@@ -125,6 +134,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
               onChange={handleChange}
               required
             />
+            {phoneError && <p className="text-sm text-red-500">{phoneError}</p>}
           </div>
           {machine.id === 1 && (
             <div>

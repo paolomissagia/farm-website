@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,9 +19,11 @@ import {
   EMAIL_PUBLIC_KEY,
   EMAIL_SERVICE_ID,
 } from "@/helpers/constants";
+import { validatePhone } from "@/helpers/functions";
 
 export default function ContactModal({ onClose }: ContactModalProps) {
   const { toast } = useToast();
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const { formData, handleChange, resetForm } = useForm<ContactFormData>({
     name: "",
@@ -36,6 +38,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       const contactData = {
         ...formData,
       };
+
+      if (!validatePhone(formData.phone)) {
+        setPhoneError("Bitte geben Sie eine gültige Telefonnummer ein.");
+        return;
+      } else {
+        setPhoneError(null);
+      }
 
       await emailjs.send(
         EMAIL_SERVICE_ID,
@@ -95,6 +104,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               onChange={handleChange}
               required
             />
+            {phoneError && <p className="text-sm text-red-500">{phoneError}</p>}
           </div>
           <div>
             <Label htmlFor="message">Nachricht</Label>
