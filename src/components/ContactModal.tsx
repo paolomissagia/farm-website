@@ -128,10 +128,10 @@ export default function ContactModal({ onClose }: ContactModalProps) {
           </div>
           <DialogFooter className="sm:justify-end">
             <Button type="button" variant="outline" onClick={onClose}>
-              Stornieren
+              Abbrechen
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              Send
+              Senden
             </Button>
           </DialogFooter>
         </form>

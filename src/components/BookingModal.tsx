@@ -238,7 +238,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
               Abbrechen
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              Jetzt buchen
+              Senden
             </Button>
           </DialogFooter>
         </form>
