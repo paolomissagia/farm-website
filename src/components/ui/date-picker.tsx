@@ -36,7 +36,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           {value ? (
             format(value, "PPP", { locale: de })
           ) : (
-            <span>Pick a date</span>
+            <span>Wählen Sie ein Datum</span>
           )}
         </Button>
       </PopoverTrigger>
