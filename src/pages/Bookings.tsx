@@ -3,7 +3,7 @@ import { machines } from "@/helpers/data";
 
 export default function Bookings() {
   return (
-    <section id="choose-machine" className="px-4 py-16">
+    <section id="choose-machine" className="px-4 py-14 sm:py-16">
       <h2 className="mb-12 text-center text-3xl font-bold">
         Wählen Sie Ihre Maschine
       </h2>
