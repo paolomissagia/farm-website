@@ -38,7 +38,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
     startTime: "",
     endTime: "",
     deliveryAddress: "",
-    rentalType: machine.id == 1 ? "daily" : undefined,
+    rentalType: "daily",
   });
 
   const handleDateChange =
