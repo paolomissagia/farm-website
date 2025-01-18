@@ -7,6 +7,6 @@ export const scrollToSection = (id: string) => {
 
 export const validatePhone = (phone: string) => {
   // Simple regex to validate phone number (adjust as needed)
-  const regex = /^[0-9]{10,15}$/;
+  const regex = /^[0-9]*$/;
   return regex.test(phone);
 };
