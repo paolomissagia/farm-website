@@ -62,10 +62,18 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
     return date ? format(date, "dd/MM/yy") : undefined;
   }
 
+  function translateRentalType(rentalType: string): string | undefined {
+    if (rentalType === "daily") {
+      return "Täglich";
+    } else if (rentalType == "hourly") {
+      return "Stündlich";
+    } else {
+      return undefined;
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log(formData);
 
     if (!formData.startDate) {
       setStartDateError("Startdatum ist erforderlich");
@@ -97,6 +105,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
         machinePrice: machine.price,
         startDate: formatDate(formData.startDate),
         endDate: formatDate(formData.endDate),
+        rentalType: translateRentalType(formData.rentalType),
       };
 
       await emailjs.send(

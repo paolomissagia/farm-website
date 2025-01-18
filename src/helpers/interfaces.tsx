@@ -35,5 +35,5 @@ export interface BookingFormData {
   startTime?: string;
   endTime?: string;
   deliveryAddress: string;
-  rentalType?: string;
+  rentalType: string;
 }
