@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,11 +23,13 @@ import {
   EMAIL_SERVICE_ID,
 } from "@/helpers/constants";
 import { validatePhone } from "@/helpers/functions";
+import TimeInput from "@/components/ui/time-input";
 
 export default function BookingModal({ machine, onClose }: BookingModalProps) {
   const { toast } = useToast();
   const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [dateError, setDateError] = useState<string | null>(null);
+  const [startDateError, setStartDateError] = useState<string | null>(null);
+  const [endDateError, setEndDateError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { formData, handleChange, resetForm } = useForm<BookingFormData>({
@@ -45,14 +47,14 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
     (field: "startDate" | "endDate") => (date: Date | undefined) => {
       handleChange({
         target: { name: field, value: date },
-      } as unknown as React.ChangeEvent<HTMLInputElement>);
+      } as unknown as ChangeEvent<HTMLInputElement>);
     };
 
   const handleEndDateChange = (date: Date | undefined) => {
     if (date && formData.startDate) {
       handleChange({
         target: { name: "endDate", value: date },
-      } as unknown as React.ChangeEvent<HTMLInputElement>);
+      } as unknown as ChangeEvent<HTMLInputElement>);
     }
   };
 
@@ -63,12 +65,19 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isSubmitting) {
+    console.log(formData);
+
+    if (!formData.startDate) {
+      setStartDateError("Startdatum ist erforderlich");
       return;
     }
 
-    if (!formData.startDate) {
-      setDateError("Startdatum ist erforderlich");
+    if (
+      formData.startDate &&
+      formData.rentalType === "daily" &&
+      !formData.endDate
+    ) {
+      setEndDateError("Enddatum ist erforderlich");
       return;
     }
 
@@ -183,34 +192,38 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
               value={formData.startDate}
               onChange={handleDateChange("startDate")}
             />
-            {dateError && <p className="text-sm text-red-500">{dateError}</p>}
+            {startDateError && (
+              <p className="text-sm text-red-500">{startDateError}</p>
+            )}
           </div>
+
           {formData.rentalType === "hourly" && (
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="startTime">Startzeit</Label>
-                <Input
-                  id="startTime"
-                  name="startTime"
-                  type="time"
-                  value={formData.startTime}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="endTime">Endzeit</Label>
-                <Input
-                  id="endTime"
-                  name="endTime"
-                  type="time"
-                  value={formData.endTime}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+              <TimeInput
+                label="Startzeit"
+                name="startTime"
+                value={formData.startTime}
+                onChange={(value) =>
+                  handleChange({
+                    target: { name: "startTime", value },
+                  } as React.ChangeEvent<HTMLInputElement>)
+                }
+                required
+              />
+              <TimeInput
+                label="Endzeit"
+                name="endTime"
+                value={formData.endTime}
+                onChange={(value) =>
+                  handleChange({
+                    target: { name: "endTime", value },
+                  } as React.ChangeEvent<HTMLInputElement>)
+                }
+                required
+              />
             </div>
           )}
+
           {formData.rentalType === "daily" && (
             <div>
               <Label htmlFor="endDate">Enddatum</Label>
@@ -221,6 +234,9 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
                   formData.startDate ? date < formData.startDate : false
                 }
               />
+              {endDateError && (
+                <p className="text-sm text-red-500">{endDateError}</p>
+              )}
             </div>
           )}
           <div>
@@ -230,6 +246,7 @@ export default function BookingModal({ machine, onClose }: BookingModalProps) {
               name="deliveryAddress"
               value={formData.deliveryAddress}
               onChange={handleChange}
+              required
             />
           </div>
           <DialogFooter className="flex flex-row justify-center gap-x-3">
