@@ -18,8 +18,8 @@ export default function Hero() {
             Agrar & Dienstleistungen Oberlausitz GbR
           </h1>
           <p className="mb-8 max-w-lg text-xl">
-            Erfahren Sie mehr über unsere Dienstleistungen und wie wir Ihnen
-            weiterhelfen können
+            Erfahren Sie mehr über unsere landwirtschaftlichen Dienstleistungen
+            und wie wir Ihnen helfen können
           </p>
           <div className="flex flex-col justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 md:justify-start">
             <Button
