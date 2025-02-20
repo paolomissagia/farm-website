@@ -15,7 +15,7 @@ export default function Hero() {
         </div>
         <div className="flex w-full flex-col items-center justify-center text-center md:w-1/2">
           <h1 className="mb-4 text-4xl font-bold">
-            Agar & Dienstleistungen Oberlausitz GbR
+            Agrar & Dienstleistungen Oberlausitz GbR
           </h1>
           <p className="mb-8 max-w-lg text-xl">
             Erfahren Sie mehr über unsere Dienstleistungen und wie wir Ihnen
