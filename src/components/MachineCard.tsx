@@ -20,7 +20,7 @@ export default function MachineCard({ machine }: MachineCardProps) {
           <img
             src={machine.image}
             alt={machine.name}
-            className="h-48 w-full object-contain"
+            className="h-48 w-full object-cover"
           />
         </CardHeader>
         <CardContent>
