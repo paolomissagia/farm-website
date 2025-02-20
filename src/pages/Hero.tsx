@@ -18,8 +18,8 @@ export default function Hero() {
             Agar & Dienstleistungen Oberlausitz GbR
           </h1>
           <p className="mb-8 max-w-lg text-xl">
-            schreibe hier etwas - Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit.
+            Erfahren Sie mehr über unsere Dienstleistungen und wie wir Ihnen
+            weiterhelfen können
           </p>
           <div className="flex flex-col justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 md:justify-start">
             <Button
